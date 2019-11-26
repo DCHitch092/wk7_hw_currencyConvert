@@ -7,25 +7,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
     data: {
       baseAmount: 0,
-      currencies:[],
-      currenciesKeys:[],
-      currenciesValues:[],
       selectedCurrency: null,
       targetCurrency: null,
-      baseCurrency: "EUR"
+      baseCurrency: null
     },
 
     computed: {
+      currencies: function(){
+        return this.getCurrencies(this.baseCurrency)
+      },
+      currenciesKeys: function(){
+        return this.getKeys()
+      },
+      currenciesValues: function(){
+        return this.getValues()
+      },
       exchangeValue: function (){
         return this.getExchangeValue(this.targetCurrency, this.baseAmount, this.baseCurrency)
       }
+
+        }
     },
 
     mounted() {
-      this.getCurrencies()
+      this.getCurrencies(this.baseCurrency = "EUR")
     },
 
-    methods: {
+    methods:{
       getExchangeValue: function(targetName, baseValue, baseCurrency) {
         // console.log('targetName:', targetName);
         // console.log('baseValue:', baseValue);
@@ -35,16 +43,22 @@ document.addEventListener("DOMContentLoaded", () => {
         return convertValue * baseValue;
       },
       getCurrencies: function(base) {
-        fetch(`https://api.exchangeratesapi.io/latest?base=${this.baseCurrency}`)
+        const fetchString = "https://api.exchangeratesapi.io/latest?base=" + base
+        fetch(fetchString)
         .then(response => response.json())
-        .then((data) => {
-          this.currencies = data;
+        .then(data => this.currencies = data;)
+          // this.currenciesKeys = Object.keys(this.currencies.rates);
+          // this.currenciesValues = Object.values(this.currencies.rates);
+          // this.baseCurrency = this.currencies.base;)
+        },
+        getKeys: function(){
           this.currenciesKeys = Object.keys(this.currencies.rates);
-          this.currenciesValues = Object.values(this.currencies.rates);
-          this.baseCurrency = this.currencies.base;
+        },
+        getValues: function() {
+          this.currenciesValues = Object.keys(this.currencies.rates);
         }
-      )}
-
-    }})
-
-})
+      }
+    }
+  )
+}
+)
