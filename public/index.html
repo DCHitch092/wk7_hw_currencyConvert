@@ -10,6 +10,20 @@
 
     <div id="app">
       <h1>App</h1>
+
+      <input type="number" name="" v-model.number="baseAmount" />
+      <!-- <select class="" v-model:"baseCurrencySelect">
+      </select> -->
+      <select id="base" v-model="baseCurrency">
+        <option v-for="rate in currenciesKeys" :value="rate">{{ rate }}</option>
+      </select>
+      <label for="target">exchanging to</label>
+      <select id="target" v-model="targetCurrency">
+        <option disabled value="">Select Currency</option>
+        <option v-for="rate in currenciesKeys" :value="rate">{{ rate }}</option>
+      </select>
+
+      <h2 v-if="exchangeValue">For {{ baseAmount }} {{ baseCurrency }} you will get {{ exchangeValue }} {{ targetCurrency }}</h2>
     </div>
 
   </body>
